@@ -1,9 +1,11 @@
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { useProductStore } from '../stores/productsFromApi';
 
 let arrayProducts = ref([]);
 let columns = ref([]);
+let router = useRouter();
 const store = useProductStore()
 const allProducts = (async ()=>{
   await store.getAllProducts();
@@ -25,8 +27,16 @@ const allProducts = (async ()=>{
     //   console.error(`OCURRIÓ UN ERROR ${e}`);
     // })
 })
+
+function irAlProducto(product) {
+  router.push({
+    name: 'product',
+    params: {id: product.id}
+  })
+}
 onMounted(async ()=> {
   await allProducts();
+  console.log(store.arrayProducts);
   // columns = Object.keys(arrayProducts.value[2]);
   
 })
@@ -35,19 +45,24 @@ onMounted(async ()=> {
   <div class="">
     <table class="table-auto">
       <th v-for="(campo) in store.columns" :key="campo">
-        {{ campo }}
+        <span>
+          {{ campo }}
+        </span>
       </th>
       <!-- <th v-for="campo in arrayProducts[2]" :key="campo">
         {{ Object.keys(arrayProducts[2]) }}
       </th> -->
       <tr v-for="product in store.arrayProducts" :key="product.id">
-        <td v-for="(valorProducto,index) in Object.values(product)" :key="index">
+        <td v-for="(valorProducto,index) in Object.values(product)" :key="index" class="custom-td" @click="irAlProducto(product)" >
+          <span>
           {{ valorProducto }}
-          <!-- <div v-if="valorProducto.length>0">
+          </span>
+
+          <div v-if="typeof valorProducto ==='string' && valorProducto.startsWith('https')">
             <picture>
-              <img :src=valorProducto[0] alt="" class="" style="width: 20px;">
+              <img :src=valorProducto alt="" class="">
             </picture>
-          </div> -->
+          </div>
 
         </td>
       </tr>
@@ -55,6 +70,8 @@ onMounted(async ()=> {
   </div>
 </template>
 
-<style>
-
+<style scoped>
+.custom-td {
+  cursor: pointer;
+}
 </style>
