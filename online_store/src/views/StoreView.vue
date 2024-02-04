@@ -8,7 +8,13 @@ let columns = ref([]);
 let router = useRouter();
 const store = useProductStore()
 const allProducts = (async ()=>{
-  await store.getAllProducts();
+  if(store.arrayProducts.length >0) {
+    console.log('YA ESTÁN LOS PRODUCTOS')
+  }
+  else {
+    await store.getAllProducts();
+  }
+
   // await serviceProducts.getAllProducts()
     // .then(res=>{
     //   for(let i = 0; i< res.data.products.length; i++) {

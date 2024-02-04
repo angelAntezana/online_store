@@ -5,6 +5,7 @@ import { ref } from 'vue'
 export const useProductStore = defineStore('product', () => {
   const arrayProducts = ref([])
   const columns = ref([])
+  let product = ref({});
   // const doubleCount = computed(() => count.value * 2)
   async function getAllProducts() {
     
@@ -27,5 +28,23 @@ export const useProductStore = defineStore('product', () => {
     })
   }
 
-  return { arrayProducts,columns, getAllProducts}
+  async function getProduct(idProduct) {
+    await serviceProducts.getProduct(idProduct)
+    .then(res=> {
+      console.log('PRODUCTO:');
+      console.log(res);
+      product.value = {...res.data};
+    })
+    .catch(error => {
+      console.error(`ERROR AL OBTENER PRODUCTO: ${error}`);
+    })
+  }
+
+  return {
+    arrayProducts,
+    product,
+    columns,
+    getAllProducts,
+    getProduct
+  }
 })
