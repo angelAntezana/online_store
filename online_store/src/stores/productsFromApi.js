@@ -5,7 +5,7 @@ import { ref } from 'vue'
 export const useProductStore = defineStore('product', () => {
   const arrayProducts = ref([])
   const columns = ref([])
-  let product = ref({});
+  const product = ref();
   // const doubleCount = computed(() => count.value * 2)
   async function getAllProducts() {
     
@@ -40,11 +40,30 @@ export const useProductStore = defineStore('product', () => {
     })
   }
 
+  async function putProduct(idProduct, productRequest) {
+    await serviceProducts.putProduct(idProduct, productRequest)
+      .then(res => {
+        console.log('UPDATED PRODUCT');
+        console.log(res);
+        // product.value = [];
+        product.value = {...res.data};
+        // const index = arrayProducts.value.findIndex((pro)=>{
+        //   pro.id === idProduct;
+        // });
+        // arrayProducts.value.splice(index,1,product);
+
+      })
+      .catch(error => {
+        console.error(`ERROR EN PUTPRODUCT ${error}`);
+      })
+  }
+
   return {
     arrayProducts,
     product,
     columns,
     getAllProducts,
-    getProduct
+    getProduct,
+    putProduct
   }
 })

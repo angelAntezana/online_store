@@ -2,6 +2,7 @@
 
 
         <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+            <p class="text-center">{{ title }}</p>
     <a href="#">
         <img class="p-8 rounded-t-lg" :src="thumbnail" alt="product image" />
     </a>
