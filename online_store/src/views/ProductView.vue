@@ -41,11 +41,16 @@ async function getProduct (idProduct) {
     exito.value = true;
 }
 
-function updateProduct(idProduct) {
+async function updateProduct(idProduct) {
     const objProduct = {
         title: "DE PRUEBA"
     }
-    store.putProduct(idProduct, objProduct);
+    try {
+        await store.putProduct(idProduct, objProduct);
+        alert(`Modificado el producto con el id ${idProduct}`);
+    } catch (error) {
+        alert('OCURRIÓ un error al modificar producto '+ error);
+    }
 }
 
 onMounted(() => {
